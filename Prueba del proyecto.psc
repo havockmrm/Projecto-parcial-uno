@@ -1,170 +1,259 @@
-Algoritmo Proyecto_de_gestión_academica 
-    // Declaración de variables y constantes
-    Definir MIN_estudiantes, MAX_estudiantes, NUM_materias Como Entero
-    MIN_estudiantes = 4
-    MAX_estudiantes = 40
-    NUM_materias = 6
-	Definir estudiantes[MAX_estudiantes, 7] Como Cadena // Nombres, Apellidos, Código, Cédula, Correo, Celular, Resultado
-    Definir notas[MAX_estudiantes, NUM_materias, 3] Como Real // Nota1, Nota2, Supletorio
-    Definir materias[NUM_materias, 2] Como Cadena // Código, Descripción
-    Definir docentes[NUM_materias, 5] Como Cadena // CI, Nombres, Apellidos, Correo, Teléfono
-	//inicialización materias 
-    Definir ci_temp, telefono_temp Como Cadena
-    Definir opcion_menu_principal, opcion_menu_registro, opcion_menu_notas, num_estudiantes, i, j, k Como Entero
-    Definir nombre_materia, codigo_materia Como Cadena
-    Definir nota1, nota2, supletorio, suma_notas, promedio Como Real
-	materias[1,1] = "Calculo en una variable"
-    materias[1,2] = "MAT001"
-    materias[2,1] = "Algebra lineal"
-    materias[2,2] = "MAT002"
-    materias[3,1] = "Mecánica newtoniana"
-    materias[3,2] = "MAT003"
-    materias[4,1] = "Programación"
-    materias[4,2] = "MAT004"
-    materias[5,1] = "Deportes"
-    materias[5,2] = "MAT005"
-    materias[6,1] = "Laboratorio de mecánica newtoniana"
-    materias[6,2] = "MAT006"
-	
-    // Menú principal
-    Repetir
-        Imprimir "Menu principal"
-        Imprimir "1. Registrarse"
-        Imprimir "2. Salir"
-        Leer opcion_menu_principal
-		
-        Segun opcion_menu_principal Hacer
-            1:
-                // Registro del docente
-                Escribir "Ingrese su número de cédula (10 dígitos):"
-                Leer ci_temp
-                Mientras Longitud(ci_temp) <> 10 Hacer
-                    Escribir "Número de cédula inválido. Debe tener 10 dígitos."
-                    Leer ci_temp
-                FinMientras
-                docentes[1,1] = ci_temp
-				
-                Escribir "Ingrese su correo electrónico:"
-                Leer docentes[1,4]
-                
-                Escribir "Ingrese su número de teléfono (7-10 dígitos):"
-                Leer telefono_temp
-                Mientras Longitud(telefono_temp) < 7 O Longitud(telefono_temp) > 10 Hacer
-                    Escribir "Número de teléfono inválido. Debe tener entre 7 y 10 dígitos."
-                    Leer telefono_temp
-                FinMientras
-                docentes[1,5] = telefono_temp
-				
-                Escribir "Ingrese sus nombres:"
-                Leer docentes[1,2]
-                Escribir "Ingrese sus apellidos:"
-                Leer docentes[1,3]
-				
-                // Menú de registro
-                Repetir
-                    Imprimir "1. Ingreso de notas de estudiantes"
-                    Imprimir "2. Salir al menú principal"
-                    Leer opcion_menu_registro
-					
-                    Segun opcion_menu_registro Hacer
-                        1:
-                            // Ingreso de estudiantes
-                            Escribir "Ingrese la cantidad de estudiantes (4-40):"
-                            Leer num_estudiantes
-                            Mientras num_estudiantes < MIN_estudiantes O num_estudiantes > MAX_estudiantes Hacer
-                                Escribir "Cantidad inválida. Debe ser entre 4 y 40."
-                                Leer num_estudiantes
+Algoritmo GestionNotasUniversidad
+
+    // DefiniciÃ³n de estructuras
+    Tipo
+        Profesor Es Registro
+            CI: Texto
+            Nombres: Texto
+            Apellidos: Texto
+            CorreoInstitucional: Texto
+            NumeroTelefonico: Texto
+        FinRegistro
+    FinTipo
+    
+    Tipo
+        Estudiante Es Registro
+            Nombres: Texto
+            Apellidos: Texto
+            Codigo: Texto
+            Cedula: Texto
+            CorreoElectronico: Texto
+            NumeroCelular: Texto
+            Nota1: Real
+            Nota2: Real
+            NotaSuspension: Real
+            Estado: Texto
+        FinRegistro
+    FinTipo
+    
+    Tipo
+        Asignatura Es Registro
+            Codigo: Texto
+            Descripcion: Texto
+        FinRegistro
+    FinTipo
+
+    // Variables
+    Profesores: Vector De Profesor
+    Estudiantes: Vector De Estudiante
+    Asignaturas: Vector De Asignatura
+    CantEstudiantes, i, j: Entero
+
+    // MenÃº Principal
+    Mientras Verdadero Hacer
+        LimpiarPantalla()
+        Escribir "MenÃº Principal"
+        Escribir "1. Registro de Datos"
+        Escribir "2. Salir"
+        Leer opcion
+
+        Segun opcion Hacer
+            Caso "1":
+                // Registro de Datos
+                LimpiarPantalla()
+                Escribir "Registro de Datos"
+                Escribir "1. Registro de Profesores"
+                Escribir "2. Registro de Asignaturas"
+                Escribir "3. Registro de Estudiantes"
+                Leer opcionRegistro
+
+                Segun opcionRegistro Hacer
+                    Caso "1":
+                        // Registro de Profesores
+                        LimpiarPantalla()
+                        Escribir "Registro de Profesores"
+                        Escribir "Ingrese CI (7-10 dÃ­gitos):"
+                        Leer ci
+                        Mientras Longitud(ci) < 7 O Longitud(ci) > 10 Hacer
+                            Escribir "CI invÃ¡lido. Ingrese CI (7-10 dÃ­gitos):"
+                            Leer ci
+                        FinMientras
+                        
+                        Escribir "Ingrese Nombres:"
+                        Leer nombres
+                        Escribir "Ingrese Apellidos:"
+                        Leer apellidos
+                        Escribir "Ingrese Correo Institucional:"
+                        Leer correo
+                        Escribir "Ingrese NÃºmero TelefÃ³nico (7-10 dÃ­gitos):"
+                        Leer telefono
+                        Mientras Longitud(telefono) < 7 O Longitud(telefono) > 10 Hacer
+                            Escribir "NÃºmero telefÃ³nico invÃ¡lido. Ingrese NÃºmero TelefÃ³nico (7-10 dÃ­gitos):"
+                            Leer telefono
+                        FinMientras
+
+                        // Guardar profesor
+                        nuevoProfesor.CI = ci
+                        nuevoProfesor.Nombres = nombres
+                        nuevoProfesor.Apellidos = apellidos
+                        nuevoProfesor.CorreoInstitucional = correo
+                        nuevoProfesor.NumeroTelefonico = telefono
+                        Agregar(Profesores, nuevoProfesor)
+                    FinCaso
+
+                    Caso "2":
+                        // Registro de Asignaturas
+                        LimpiarPantalla()
+                        Escribir "Registro de Asignaturas"
+                        Para i = 1 Hasta 6 Con Paso 1 Hacer
+                            Escribir "Ingrese CÃ³digo de la Asignatura ", i, ":"
+                            Leer codigo
+                            Escribir "Ingrese DescripciÃ³n de la Asignatura ", i, ":"
+                            Leer descripcion
+                            nuevaAsignatura.Codigo = codigo
+                            nuevaAsignatura.Descripcion = descripcion
+                            Agregar(Asignaturas, nuevaAsignatura)
+                        FinPara
+                    FinCaso
+
+                    Caso "3":
+                        // Registro de Estudiantes
+                        LimpiarPantalla()
+                        Escribir "Registro de Estudiantes"
+                        Escribir "Ingrese la cantidad de estudiantes a registrar (4-40):"
+                        Leer CantEstudiantes
+                        Mientras CantEstudiantes < 4 O CantEstudiantes > 40 Hacer
+                            Escribir "Cantidad invÃ¡lida. Ingrese la cantidad de estudiantes a registrar (4-40):"
+                            Leer CantEstudiantes
+                        FinMientras
+
+                        Para i = 1 Hasta CantEstudiantes Con Paso 1 Hacer
+                            Escribir "Registro del estudiante ", i
+                            Escribir "Ingrese Nombres:"
+                            Leer nombres
+                            Escribir "Ingrese Apellidos:"
+                            Leer apellidos
+                            Escribir "Ingrese CÃ³digo:"
+                            Leer codigo
+                            Escribir "Ingrese CÃ©dula (10 dÃ­gitos):"
+                            Leer cedula
+                            Mientras Longitud(cedula) <> 10 Hacer
+                                Escribir "CÃ©dula invÃ¡lida. Ingrese CÃ©dula (10 dÃ­gitos):"
+                                Leer cedula
                             FinMientras
-							
-                            Para i = 1 Hasta num_estudiantes Hacer
-                                Escribir "Ingrese el nombre del estudiante ", i, ":"
-                                Leer estudiantes[i,1]
-                                Escribir "Ingrese el apellido del estudiante ", i, ":"
-                                Leer estudiantes[i,2]
-                                Escribir "Ingrese el código del estudiante ", i, ":"
-                                Leer estudiantes[i,3]
-                                
-                                Escribir "Ingrese la cédula del estudiante (10 dígitos):"
-                                Leer ci_temp
-                                Mientras Longitud(ci_temp) <> 10 Hacer
-                                    Escribir "Número de cédula inválido. Debe tener 10 dígitos."
-                                    Leer ci_temp
+
+                            Escribir "Ingrese Correo ElectrÃ³nico:"
+                            Leer correo
+                            Escribir "Ingrese NÃºmero de Celular (7-10 dÃ­gitos):"
+                            Leer telefono
+                            Mientras Longitud(telefono) < 7 O Longitud(telefono) > 10 Hacer
+                                Escribir "NÃºmero de celular invÃ¡lido. Ingrese NÃºmero de Celular (7-10 dÃ­gitos):"
+                                Leer telefono
+                            FinMientras
+
+                            nuevoEstudiante.Nombres = nombres
+                            nuevoEstudiante.Apellidos = apellidos
+                            nuevoEstudiante.Codigo = codigo
+                            nuevoEstudiante.Cedula = cedula
+                            nuevoEstudiante.CorreoElectronico = correo
+                            nuevoEstudiante.NumeroCelular = telefono
+                            nuevoEstudiante.Nota1 = -1
+                            nuevoEstudiante.Nota2 = -1
+                            nuevoEstudiante.NotaSuspension = -1
+                            nuevoEstudiante.Estado = "No evaluado"
+                            Agregar(Estudiantes, nuevoEstudiante)
+                        FinPara
+
+                        // Ingreso de Notas
+                        Para i = 1 Hasta CantEstudiantes Con Paso 1 Hacer
+                            LimpiarPantalla()
+                            Escribir "Ingreso de notas para el estudiante: ", Estudiantes[i].Nombres, " ", Estudiantes[i].Apellidos
+                            Escribir "Ingrese Nota 1 (0-20):"
+                            Leer nota1
+                            Mientras nota1 < 0 O nota1 > 20 Hacer
+                                Escribir "Nota invÃ¡lida. Ingrese Nota 1 (0-20):"
+                                Leer nota1
+                            FinMientras
+
+                            Escribir "Ingrese Nota 2 (0-20):"
+                            Leer nota2
+                            Mientras nota2 < 0 O nota2 > 20 Hacer
+                                Escribir "Nota invÃ¡lida. Ingrese Nota 2 (0-20):"
+                                Leer nota2
+                            FinMientras
+
+                            sumaNotas = nota1 + nota2
+                            Estudiantes[i].Nota1 = nota1
+                            Estudiantes[i].Nota2 = nota2
+
+                            Si sumaNotas >= 28 Entonces
+                                Estudiantes[i].Estado = "Aprueba"
+                            SinoSi sumaNotas <= 16 Entonces
+                                Estudiantes[i].Estado = "Reprueba"
+                            Sino
+                                Estudiantes[i].Estado = "SuspensiÃ³n"
+                                Escribir "Ingrese Nota de Examen de SuspensiÃ³n (0-40):"
+                                Leer notaSuspension
+                                Mientras notaSuspension < 0 O notaSuspension > 40 Hacer
+                                    Escribir "Nota invÃ¡lida. Ingrese Nota de Examen de SuspensiÃ³n (0-40):"
+                                    Leer notaSuspension
                                 FinMientras
-                                estudiantes[i,4] = ci_temp
-								
-                                Escribir "Ingrese el correo del estudiante:"
-                                Leer estudiantes[i,5]
-								
-                                Escribir "Ingrese el número de celular del estudiante (7-10 dígitos):"
-                                Leer telefono_temp
-                                Mientras Longitud(telefono_temp) < 7 O Longitud(telefono_temp) > 10 Hacer
-                                    Escribir "Número de celular inválido. Debe tener entre 7 y 10 dígitos."
-                                    Leer telefono_temp
-                                FinMientras
-                                estudiantes[i,6] = telefono_temp
-                            FinPara
-							
-                            // Ingreso de notas
-                            Para i = 1 Hasta num_estudiantes Hacer
-                                Escribir "Ingrese las notas para el estudiante ", estudiantes[i,1], " ", estudiantes[i,2], ":"
-                                Para j = 1 Hasta NUM_materias Hacer
-                                    Escribir "Materia: ", materias[j,1]
-                                    Repetir
-                                        Escribir "Ingrese la nota 1 (0-20):"
-                                        Leer nota1
-                                    Hasta Que nota1 >= 0 Y nota1 <= 20
-                                    notas[i,j,1] = nota1
-									
-                                    Repetir
-                                        Escribir "Ingrese la nota 2 (0-20):"
-                                        Leer nota2
-                                    Hasta Que nota2 >= 0 Y nota2 <= 20
-                                    notas[i,j,2] = nota2
-									
-                                    suma_notas = nota1 + nota2
-									
-                                    Si suma_notas >= 28 Entonces
-                                        estudiantes[i,7] = "APROBADO"
-                                    Sino
-                                        Si suma_notas <= 16 Entonces
-                                            estudiantes[i,7] = "REPROBADO"
-                                        Sino
-                                            estudiantes[i,7] = "SUSPENDIDO"
-                                            Repetir
-                                                Escribir "Ingrese la nota del examen supletorio (0-40):"
-                                                Leer supletorio
-                                            Hasta Que supletorio >= 0 Y supletorio <= 40
-                                            notas[i,j,2] = supletorio
-                                            Si supletorio < 24 Entonces
-                                                estudiantes[i,6] = "REPROBADO"
-                                            FinSi
-                                        FinSi
-                                    FinSi
-                                FinPara
-                            FinPara
-                        2:
-                            // Salir al menú principal
-                            Escribir "Saliendo al menú principal..."
-                    FinSegun
-                Hasta Que opcion_menu_registro = 2
+
+                                Estudiantes[i].NotaSuspension = notaSuspension
+
+                                Si notaSuspension < 24 Entonces
+                                    Estudiantes[i].Estado = "Reprueba"
+                                Sino
+                                    Estudiantes[i].Estado = "Aprueba"
+                                FinSi
+                            FinSi
+                        FinPara
+                    FinCaso
+
+                    Caso "4":
+                        // Salir al MenÃº Principal
+                        Continuar
+                    FinCaso
+                FinSegun
+            FinCaso
+
+            Caso "2":
+                // Salir del Programa
+                Escribir "Saliendo del programa..."
+                Salir
+            FinCaso
         FinSegun
-    Hasta Que opcion_menu_principal = 2
-	
-    // Imprimir datos de los profesores
-    Escribir "Datos de los profesores:"
-    Para i = 1 Hasta 1 Hacer // Solo un profesor registrado
-        Para j = 1 Hasta NUM_materias Hacer
-            Escribir "Profesor: [", i, "][", j, "] CI: ", docentes[i-1,0], ", Nombres: ", docentes[i-1,1], ", Apellidos: ", docentes[i-1,2], ", Correo: ", docentes[i-1,3], ", Teléfono: ", docentes[i-1,4]
-        FinPara
+    FinMientras
+
+    // ImpresiÃ³n de Resultados
+    LimpiarPantalla()
+    Escribir "Resultados:"
+    
+    Escribir "Profesores:"
+    Para i = 1 Hasta Longitud(Profesores) Con Paso 1 Hacer
+        Escribir "CI: ", Profesores[i].CI
+        Escribir "Nombres: ", Profesores[i].Nombres
+        Escribir "Apellidos: ", Profesores[i].Apellidos
+        Escribir "Correo Institucional: ", Profesores[i].CorreoInstitucional
+        Escribir "NÃºmero TelefÃ³nico: ", Profesores[i].NumeroTelefonico
+        Escribir "----------------------"
     FinPara
-	
-    // Imprimir datos de los estudiantes
-    Escribir "Datos de los estudiantes:"
-    Para i = 1 Hasta num_estudiantes Hacer
-        Escribir "Estudiante: [", i, "] Nombres: ", estudiantes[i,0], ", Apellidos: ", estudiantes[i,1], ", Código: ", estudiantes[i,2], ", Cédula: ", estudiantes[i,3], ", Correo: ", estudiantes[i,4], ", Celular: ", estudiantes[i,5], ", Resultado: ", estudiantes[i,6]
+
+    Escribir "Asignaturas:"
+    Para i = 1 Hasta Longitud(Asignaturas) Con Paso 1 Hacer
+        Escribir "CÃ³digo: ", Asignaturas[i].Codigo
+        Escribir "DescripciÃ³n: ", Asignaturas[i].Descripcion
+        Escribir "----------------------"
     FinPara
-	
-    Escribir "Saliendo del programa..."
+
+    Escribir "Estudiantes:"
+    Para i = 1 Hasta Longitud(Estudiantes) Con Paso 1 Hacer
+        Escribir "Nombres: ", Estudiantes[i].Nombres
+        Escribir "Apellidos: ", Estudiantes[i].Apellidos
+        Escribir "CÃ³digo: ", Estudiantes[i].Codigo
+        Escribir "CÃ©dula: ", Estudiantes[i].Cedula
+        Escribir "Correo ElectrÃ³nico: ", Estudiantes[i].CorreoElectronico
+        Escribir "NÃºmero de Celular: ", Estudiantes[i].NumeroCelular
+        Escribir "Nota 1: ", Estudiantes[i].Nota1
+        Escribir "Nota 2: ", Estudiantes[i].Nota2
+        Si Estudiantes[i].Estado = "SuspensiÃ³n" Entonces
+            Escribir "Nota SuspensiÃ³n: ", Estudiantes[i].NotaSuspension
+        FinSi
+        Escribir "Estado: ", Estudiantes[i].Estado
+        Escribir "----------------------"
+    FinPara
+
 FinAlgoritmo
+
 
 
